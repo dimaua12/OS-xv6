@@ -57,9 +57,79 @@ main(int argc, char *argv[])
   exit(0);
 }
 
+
 void
 memdump(char *fmt, char *data, int len)
 {
   // Your code here.  `data` holds `len` valid bytes.
+  int remaining = len;
 
+  while (*fmt != '\0') {
+    switch (*fmt) {
+    case 'c':
+      if (remaining < sizeof(char)) {
+        fprintf(2, "memdump: not enough data for 'c'\n");
+        return;
+      }
+      printf("%c\n", *data);
+      data += sizeof(char);
+      remaining -= sizeof(char);
+      break;
+
+    case 'h':
+      if (remaining < sizeof(short)) {
+        fprintf(2, "memdump: not enough data for 'h'\n");
+        return;
+      }
+      printf("%d\n", *((short *)data));
+      data += sizeof(short);
+      remaining -= sizeof(short);
+      break;
+
+    case 'i':
+      if (remaining < sizeof(int)) {
+        fprintf(2, "memdump: not enough data for 'i'\n");
+        return;
+      }
+      printf("%d\n", *((int *)data));
+      data += sizeof(int);
+      remaining -= sizeof(int);
+      break;
+
+    case 'p':
+      if (remaining < sizeof(uint64)) {
+        fprintf(2, "memdump: not enough data for 'p'\n");
+        return;
+      }
+      printf("%lx\n", *((uint64 *)data));
+      data += sizeof(uint64);
+      remaining -= sizeof(uint64);
+      break;
+
+    case 's':
+      if (remaining < sizeof(char *)) {
+        fprintf(2, "memdump: not enough data for 's'\n");
+        return;
+      }
+      printf("%s\n", *((char **)data));
+      data += sizeof(char *);
+      remaining -= sizeof(char *);
+      break;
+
+    case 'S':
+      while (remaining > 0 && *data != '\0') {
+        printf("%c", *data);
+        data++;
+        remaining--;
+      }
+      printf("\n");
+      if (remaining > 0) {
+        data++;
+        remaining--;
+      }
+      break;
+    }
+
+    fmt++;
+  }
 }
