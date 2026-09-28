@@ -90,6 +90,16 @@ sys_pause(void)
 }
 
 uint64
+sys_interpose(void){
+  int mask;
+
+  argint(0,&mask);
+  struct proc *p = myproc();
+  p->syscall_mask = mask;
+  return 0;
+}
+
+uint64
 sys_kill(void)
 {
   int pid;
