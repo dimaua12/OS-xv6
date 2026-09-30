@@ -204,7 +204,8 @@ UPROGS=\
 	$U/_dorphan\
 	$U/_sync\
 	$U/_sixfive\
-
+	$U/_sleep\
+	$U/_memdump\
 
 
 
