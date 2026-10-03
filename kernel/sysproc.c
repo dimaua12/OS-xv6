@@ -92,10 +92,12 @@ sys_pause(void)
 uint64
 sys_interpose(void){
   int mask;
-
+  char buf[MAXPATH];
   argint(0,&mask);
+  if (argstr(1, buf, MAXPATH) < 0) return -1;
   struct proc *p = myproc();
   p->syscall_mask = mask;
+  memmove(p->allowed_path, buf, MAXPATH);
   return 0;
 }
 
