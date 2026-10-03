@@ -206,6 +206,7 @@ UPROGS=\
 	$U/_sixfive\
 	$U/_sleep\
 	$U/_memdump\
+        $U/_square\
 
 
 
