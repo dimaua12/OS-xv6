@@ -110,6 +110,12 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+#include "param.h"
+uint64
+sys_ncpus(void){
+	return NCPU;
+}
+
 uint64
 sys_square(void)
 {

@@ -207,6 +207,7 @@ UPROGS=\
 	$U/_sleep\
 	$U/_memdump\
         $U/_square\
+	$U/_ncpus\
 
 
 
