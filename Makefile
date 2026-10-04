@@ -208,6 +208,8 @@ UPROGS=\
 	$U/_memdump\
         $U/_square\
 	$U/_ncpus\
+	$U/_cpybuf\
+	$U/_insert\
 
 
 

@@ -6,6 +6,14 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "vm.h"
+#include "fs.h"
+#include "stat.h"
+#include "sleeplock.h"
+#include "file.h"
+#include "cpybuf.h"
+
+char cpybuf_storage[CPYBUF_SIZE];
+uint cpybuf_size;
 
 uint64
 sys_exit(void)
@@ -124,9 +132,32 @@ sys_square(void)
     n = n * n;    
     return n;
 }
+uint64
+sys_cpybuf(void)
+{
+  char path[MAXPATH];
+  struct inode *ip;
+  uint size;
+  int n;
 
+  if (argstr(0, path, sizeof(path)) < 0)
+    return -1;
 
+  if ((ip = namei(path)) == 0)
+    return -1;
 
+  ilock(ip);
+  size = ip->size;
+  if (ip->type == T_DIR || size > CPYBUF_SIZE) {
+    iunlockput(ip);
+    return -1;
+  }
 
+  n = readi(ip, 0, (uint64)cpybuf_storage, 0, size);
+  iunlockput(ip);
+  if (n != size)
+    return -1;
 
-
+  cpybuf_size = size;
+  return 0;
+}

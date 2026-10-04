@@ -45,3 +45,5 @@ entry("uptime");
 entry("sync");
 entry("square");
 entry("ncpus");
+entry("cpybuf");
+entry("insert");

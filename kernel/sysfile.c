@@ -15,6 +15,9 @@
 #include "sleeplock.h"
 #include "file.h"
 #include "fcntl.h"
+#include "cpybuf.h"
+
+static struct inode *create(char *path, short type, short major, short minor);
 
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
@@ -49,6 +52,38 @@ fdalloc(struct file *f)
     }
   }
   return -1;
+}
+
+uint64
+sys_insert(void)
+{
+  char path[MAXPATH];
+  struct inode *ip;
+  int n;
+
+  if (argstr(0, path, MAXPATH) < 0)
+    return -1;
+
+  begin_op();
+  if ((ip = create(path, T_FILE, 0, 0)) == 0) {
+    end_op();
+    return -1;
+  }
+
+  if (ip->type != T_FILE) {
+    iunlockput(ip);
+    end_op();
+    return -1;
+  }
+
+  itrunc(ip);
+  n = writei(ip, 0, (uint64)cpybuf_storage, 0, cpybuf_size);
+  iunlockput(ip);
+  end_op();
+  for (int i = 0; i < n; i++)
+    printk("%c", (char)cpybuf_storage[i]);
+  printk("\n");
+  return n == cpybuf_size ? 0 : -1;
 }
 
 uint64

@@ -23,3 +23,5 @@
 #define SYS_sync   22
 #define SYS_square 23
 #define SYS_ncpus 24
+#define SYS_cpybuf 25
+#define SYS_insert 26

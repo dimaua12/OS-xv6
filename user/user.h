@@ -27,6 +27,8 @@ int uptime(void);
 int sync(void);
 int square(int);
 int ncpus(void);
+int cpybuf(const char *path);
+int insert(const char *path);
 // ulib.c
 int stat(const char *, struct stat *);
 char *strcpy(char *, const char *);
