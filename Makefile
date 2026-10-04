@@ -210,6 +210,7 @@ UPROGS=\
 	$U/_ncpus\
 	$U/_cpybuf\
 	$U/_insert\
+	$U/_cp\
 
 
 
